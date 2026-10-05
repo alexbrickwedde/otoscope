@@ -1,0 +1,1 @@
+Adds support for Soulear otoscopes (tested with the Hopefox Find T). The app picks them up from a Wi-Fi scan and streams live video with auto-rotation, battery level and a ring-light on/off toggle.
