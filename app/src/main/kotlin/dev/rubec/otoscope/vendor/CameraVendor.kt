@@ -79,9 +79,10 @@ enum class DiscoveryMode {
 
 /** Central registry of all supported vendors. */
 object CameraVendors {
-    // iTiMO is checked before Xylla because both share the `0x66 0x99` BLE
-    // manufacturer magic; the SSID-name check on iTiMO would lose otherwise.
-    val all: List<CameraVendor> = listOf(ItimoVendor, XyllaVendor, JegoatVendor, EarFairyVendor, I4seasonVendor)
+    // iTiMO and Airlook are checked before Xylla because all three share the
+    // `0x66 0x99` BLE manufacturer magic; their SSID-name checks would lose
+    // otherwise.
+    val all: List<CameraVendor> = listOf(ItimoVendor, AirlookVendor, XyllaVendor, JegoatVendor, EarFairyVendor, I4seasonVendor)
 
     val bleVendors: List<CameraVendor> = all.filter { it.discoveryMode == DiscoveryMode.BLE }
     val wifiScanVendors: List<CameraVendor> = all.filter { it.discoveryMode == DiscoveryMode.WIFI_SCAN }

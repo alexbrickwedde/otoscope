@@ -101,6 +101,36 @@ class VendorAdvertTest {
         assertNull(ItimoVendor.parseAdvert("AA:BB", "JesHome-XXXX", record, -60))
     }
 
+    // ---- Airlook ----------------------------------------------------------
+
+    @Test fun `Airlook accepts AIR-ES-prefixed names and extracts the BSSID`() {
+        val bssid = byteArrayOf(0x0A, 0x0B, 0x0C, 0x0D, 0x0E, 0x0F)
+        val record = byteArrayOf(
+            0x09, 0xFF.toByte(),
+            0x66, 0x99.toByte(),
+            *bssid,
+        )
+        val a = requireNotNull(
+            AirlookVendor.parseAdvert("AA:BB", "AIR-ES-123456", record, -60)
+        )
+        assertEquals(AirlookVendor, a.vendor)
+        assertEquals("AIR-ES-123456", a.ssid)
+        assertEquals("0A:0B:0C:0D:0E:0F", a.bssid)
+        assertNull(a.wpa2Passphrase) // Airlook APs are open, like Xylla
+    }
+
+    @Test fun `Airlook rejects Xylla-branded names even with same magic`() {
+        // Same 66-99 envelope as Xylla, but the SSID name doesn't match
+        // Airlook's prefix — must fall through so Xylla's parser can
+        // claim it downstream.
+        val record = byteArrayOf(
+            0x09, 0xFF.toByte(),
+            0x66, 0x99.toByte(),
+            0x11, 0x22, 0x33, 0x44, 0x55, 0x66,
+        )
+        assertNull(AirlookVendor.parseAdvert("AA:BB", "JesHome-XXXX", record, -60))
+    }
+
     // ---- JEGOAT ----------------------------------------------------------
 
     @Test fun `JEGOAT extracts BSSID and derives WPA2 passphrase from it`() {

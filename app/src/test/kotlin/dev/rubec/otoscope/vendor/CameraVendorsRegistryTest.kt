@@ -23,11 +23,13 @@ class CameraVendorsRegistryTest {
     @Test fun `all vendors are present and split correctly by discovery mode`() {
         assertTrue(XyllaVendor in CameraVendors.all)
         assertTrue(ItimoVendor in CameraVendors.all)
+        assertTrue(AirlookVendor in CameraVendors.all)
         assertTrue(JegoatVendor in CameraVendors.all)
         assertTrue(EarFairyVendor in CameraVendors.all)
 
         assertTrue(XyllaVendor in CameraVendors.bleVendors)
         assertTrue(ItimoVendor in CameraVendors.bleVendors)
+        assertTrue(AirlookVendor in CameraVendors.bleVendors)
         assertTrue(JegoatVendor in CameraVendors.bleVendors)
         assertTrue(XyllaVendor !in CameraVendors.wifiScanVendors)
 
@@ -55,6 +57,22 @@ class CameraVendorsRegistryTest {
         )
         assertNotNull(advert)
         assertSame(ItimoVendor, advert.vendor)
+    }
+
+    @Test fun `Airlook advert wins over Xylla even with matching 66-99 magic`() {
+        val record = byteArrayOf(
+            0x09, 0xFF.toByte(),
+            0x66, 0x99.toByte(),
+            0x11, 0x22, 0x33, 0x44, 0x55, 0x66,
+        )
+        val advert = CameraVendors.parseAdvert(
+            bleAddress = "AA:BB",
+            deviceName = "AIR-ES-04C8BD",
+            scanRecord = record,
+            rssi = -50,
+        )
+        assertNotNull(advert)
+        assertSame(AirlookVendor, advert.vendor)
     }
 
     @Test fun `Xylla name still routes to Xylla when iTiMO refuses`() {
