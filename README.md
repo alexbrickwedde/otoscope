@@ -23,11 +23,12 @@ Otoscope is a reverse-engineered drop-in replacement for the proprietary compani
 
 ## Hardware compatibility
 
-The app supports five camera families across two discovery paths. Pick your family on the home screen; the app scans the right way and hands the video off to the vendor-specific protocol automatically.
+The app supports six camera families across two discovery paths. Pick your family on the home screen; the app scans the right way and hands the video off to the vendor-specific protocol automatically.
 
 | Family        | Discovery | SSID prefix                      | Wi-Fi auth | Video | Companion app |
 |---------------|-----------|----------------------------------| ---------- | ----- | ------------- |
 | **Xylla**     | BLE       | `Enjoy-XXXXXX`<br>`JesHome-XXXX` | open | UDP/8032 MJPEG | "AIR-Look" (`com.air.airlook`) |
+| **Airlook**   | BLE       | `AIR-ES-XXXXXX`                  | open | UDP/8032 MJPEG | "AIR-Look" (`com.air.airlook`) |
 | **iTiMO**     | BLE       | `iTiMO-XXXXXX`<br>`jetion_XXXX`    | open | UDP/8031 MJPEG | "iTiMO" (`com.molink.john.itimo`) |
 | **JEGOAT**    | BLE       | `softish-XXXXXX`                 | WPA2 | UDP/61501 MJPEG | "EarVision" (`com.atomath.wifi_camera`) |
 | **EarFairy**  | Wi-Fi     | `Cooleer_XXXXXX`                 | open | RTSP/7070 MJPEG | "Cooleer" (`com.cooingdv.cooleer`) |
@@ -56,7 +57,7 @@ adb install -r app/build/outputs/apk/debug/app-debug.apk
 
 | Feature                    | State                                   |
 | -------------------------- |-----------------------------------------|
-| BLE discovery              | ✅ for Xylla, iTiMO, JEAGOAT             |
+| BLE discovery              | ✅ for Xylla, Airlook, iTiMO, JEAGOAT    |
 | Wi-Fi discovery            | ✅ for EarFairy, Soulear                 |
 | Wi-Fi join                 | ✅ open or WPA2                          |
 | Live video                 | ✅ MJPEG decoded in-app (UDP or RTSP)    |
